@@ -1,0 +1,9 @@
+[submodule "mbot_bridge_ros"]
+	path = mbot_bridge_ros
+	url = https://github.com/Veldrovive/mbot_bridge_ros.git
+[submodule "mbot_ros2_ws"]
+	path = mbot_ros2_ws
+	url = https://github.com/mbot-project/mbot_ros2_ws.git
+[submodule "mbot_web_app_ros"]
+	path = mbot_web_app_ros
+	url = https://github.com/Veldrovive/mbot_web_app_ros.git

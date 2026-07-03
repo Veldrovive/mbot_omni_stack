@@ -1,0 +1,16 @@
+[Unit]
+Description=MBot Omni Stack Service
+After=network.target
+
+[Service]
+Type=forking
+User=mbot
+Group=mbot
+WorkingDirectory=/home/mbot/mbot_omni_stack
+ExecStart=/home/mbot/mbot_omni_stack/scripts/start_omni_stack.sh
+ExecStop=/usr/bin/tmux kill-session -t mbot_omni
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
