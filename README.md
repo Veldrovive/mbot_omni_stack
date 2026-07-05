@@ -15,11 +15,17 @@ The project is structured into three main submodules:
 - Node.js (v18+) and npm installed
 - Tmux installed (for process management during bringup)
 
-## Building the Workspaces
+## Testing environments
+This has been tested on an MBot omni with ubuntu 24.4 and ROS2 jazzy.
+
+## Using the Workspaces
 
 Before running the stack, you must build both the ROS bridge and the main ROS 2 workspace.
 
-### 1. Build the ROS Bridge
+### 1. MBot Bridge
+The MBot bridge allows us to control the robot from languages besides c++. For more information, see the mbot bridge README.
+
+#### Building the ROS bridge
 ```bash
 cd mbot_bridge_ros/ws
 rosdep update
@@ -27,12 +33,46 @@ rosdep install --from-paths src --ignore-src -r -y
 colcon build
 ```
 
-### 2. Build the MBot ROS 2 Workspace
+#### Running the ROS bridge
+```bash
+cd mbot_bridge_ros/ws
+source install/setup.bash
+ros2 launch rosbridge_server rosbridge_websocket_launch.xml
+```
+
+#### Testing the MBot bridge
+Once the ROS bridge is running, we should be able to interact with the mbot. Make sure you have room for the mbot to move and then run the following.
+```bash
+cd mbot_bridge_ros/mbot_js
+npm install
+npm run test:bridge
+```
+
+### 2. MBot ROS 2 Workspace
+The MBot ROS 2 workspace contains all the boilerplate code for the MBot specific hardware. It will be used to run the sensors and SLAM.
+> And navigation if you have a map you want to use.
+
+#### Build the ROS 2 workspace
 ```bash
 cd mbot_ros2_ws
 rosdep update
 rosdep install --from-paths src --ignore-src -r -y
 colcon build
+```
+
+#### Running the LIDAR bringup
+This script publishes the robot description and the LIDAR data.
+```bash
+cd mbot_ros2_ws
+source install/setup.bash
+ros2 launch mbot_bringup mbot_bringup.launch.py
+```
+
+#### Running the SLAM toolbox
+```bash
+cd mbot_ros2_ws
+source install/setup.bash
+ros2 launch mbot_navigation slam_toolbox_online_async_launch.py
 ```
 
 ### 3. Install Web App Dependencies
