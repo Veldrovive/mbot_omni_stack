@@ -13,6 +13,10 @@ The project is made up of five submodules:
 
 > `mbot_web_app_ros` and `scratch-editor-mbot` each contain their own copy of `mbot_bridge_ros` as a nested submodule, and they build `mbot_js` from that copy rather than from the top-level one. When you update `mbot_bridge_ros`, update all three copies to the same commit and rebuild `mbot_js` in each.
 
+## Documentation
+
+Setting up a bot from a blank SD card, and a reference for every service, port and file on a working bot, are in [docs/](docs/README.md). This README covers building and running the stack on a bot that already has the base system.
+
 ## Prerequisites
 
 - **A base MBot image set up with [mbot_sys_utils](https://github.com/mbot-project/mbot_sys_utils)** (the `ros2_mbot_sys_utils` folder). Its install scripts set up ROS 2 Jazzy, the pico-sdk, the micro-ROS agent in `~/microros_ws`, the udev rule that names the control board's serial ports `/dev/mbot_microros` and `/dev/mbot_debug`, and the `mbot-microros-agent`, `mbot-start-network` and `mbot-oled` services. They also add these lines to `~/.bashrc`:
@@ -47,12 +51,13 @@ The MBot ROS 2 workspace contains all the boilerplate code for the MBot specific
 > And navigation if you have a map you want to use.
 
 #### Build the ROS 2 workspace
-The packages sit directly in `mbot_ros2_ws` (there is no `src/` folder), so rosdep is pointed at `.`:
+The packages sit directly in `mbot_ros2_ws` (there is no `src/` folder), so rosdep is pointed at `.`. libcamera is skipped because mbot_sys_utils already built it from source; without the skip, rosdep would install a second copy from apt.
 ```bash
 cd mbot_ros2_ws
 rosdep update
-rosdep install --from-paths . --ignore-src -r -y
+rosdep install --from-paths . --ignore-src -r -y --skip-keys=libcamera
 colcon build
+echo "source $PWD/install/local_setup.bash" >> ~/.bashrc
 ```
 
 > **Known issue:** `mbot_bringup.launch.py` loads `mbot_description/urdf/mbot_classic.urdf.xacro`. There is no Omni URDF yet, so the robot model, TF frames and footprint are the Classic's.
