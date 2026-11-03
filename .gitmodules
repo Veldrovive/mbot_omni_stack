@@ -7,3 +7,12 @@
 [submodule "mbot_web_app_ros"]
 	path = mbot_web_app_ros
 	url = https://github.com/Veldrovive/mbot_web_app_ros.git
+[submodule "mbot_firmware_ros_omni"]
+	path = mbot_firmware_ros_omni
+	url = https://github.com/Veldrovive/mbot_firmware_ros_omni
+	branch = main
+[submodule "scratch-editor-mbot"]
+	path = scratch-editor-mbot
+	url = https://github.com/Veldrovive/scratch-editor-mbot.git
+	branch = develop
+	shallow = true
